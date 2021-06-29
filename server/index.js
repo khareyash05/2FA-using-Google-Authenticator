@@ -1,17 +1,23 @@
 const speakeasy = require("speakeasy")
 const qrcode = require("qrcode")
+const bodyParser = require("body-parser")
 const express = require("express")
 const app = express()
+app.use(bodyParser.urlencoded({extended:true}))
+app.use(express.json())
 
-app.get("/generateqrcode",(req,res)=>{
+app.post("/",(req,res)=>{
     var secret1 = speakeasy.generateSecret({
         name : req.body.name 
     })
     console.log(secret1);
     
-    qrcode.toDataURL(secret.otpauth_url,function(err,data){
-        console.log(data); // need to send the secret.otpauth_url as img tag in JS
+    qrcode.toDataURL(secret1.otpauth_url,function(err,data){
+        console.log(data); // need to send the data as img tag in JS
     })
+    console.log("Here come name "+req.body.name);
+    console.log(req.body.h);
+    console.log(req.body.img);
 })
 
 app.get("/check",(req,res)=>{
@@ -30,4 +36,10 @@ app.post("/check",(req,res)=>{
     else{
         return res.status(422).send("Login UnSUccessful")
     }
+})
+
+const port = process.env.PORT || 5000
+
+app.listen(port,()=>{
+    console.log("Server running");
 })
