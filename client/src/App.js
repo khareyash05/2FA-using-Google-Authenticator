@@ -4,48 +4,41 @@ import React,{useState} from "react"
 function App() {
 
   const [user,setUser] = useState({
-    name: '', src:''
+    name: '',pass:'',img:''
   })
+  // user.img = "https://upload.wikimedia.org/wikipedia/commons/7/7d/Wildlife_at_Maasai_Mara_%28Lion%29.jpg"
   
   let name,value
   const handleInputs = (e)=>{
     name = e.target.name
     value = e.target.value
-    setUser({[name]:value})
+    setUser({...user,[name]:value})
   }
 
   const PostData = async(e)=>{
-    const {name,src} = user
-    const res = await fetch("/",{
+    e.preventDefault()
+    const {name,pass,img} = user
+    console.log(img);
+    await fetch("/",{
       method : "POST",
       headers : {
         "Content-Type" : "application/json"
       },
       body : JSON.stringify({
-        name , src
+        name ,pass,img
       })
     })
-    const data = await res.json()
-    if(data.status === 422 || !data){
-      window.alert("Invalid Registration")
-      console.log("Invalid Registration");
-    }
-    else {
-      window.alert("DOne Registration")
-      console.log("DOne Registration");
-    }
   }
 
   return (
     <>
-      <div>
+      <form method = "POST">
         <input placeholder="Enter your name" name="name" value={user.name} onChange={handleInputs}/>
-        <input placeholder="Enter password"/>
+        <input placeholder="Enter password" name="pass" value={user.pass} onChange={handleInputs}/>
         <button onClick={PostData}>Submit</button>
-      </div>
+        <img src={user.img} alt="" id="img" name="img"/> 
+      </form>
       <br/><br/>
-      <img src={user.src}alt="" id="img" name="img"/> 
-      <h1 name="h">Hello</h1>
       <a href="/check"><button>Enter OTP</button></a>
     </>
   );
