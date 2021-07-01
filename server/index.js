@@ -13,8 +13,10 @@ app.post("/",(req,res)=>{
     console.log(secret1);
     
     qrcode.toDataURL(secret1.otpauth_url,function(err,data){
-        console.log(data); // need to send the data as src in img tag in JS
-        req.body.img = data
+        console.log(data); // need to send the data as src in img tag in JS        
+        return res.json({
+            dataURL: data
+        })
     })
     console.log("Here come name "+req.body.name);
 })
