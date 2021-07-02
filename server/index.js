@@ -32,6 +32,7 @@ app.post("/check",(req,res)=>{
         encoding : 'ascii',
         token : req.body.otp 
     })
+    console.log(verified);
     if(verified){
         return res.status(200).send("Login SUccessful")
     }

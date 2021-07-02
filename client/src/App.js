@@ -29,15 +29,15 @@ function App() {
     })
     const data = await res.json()
     twofactor = data
-    console.log(twofactor.dataURL);
+    window.a = twofactor.dataURL
+    console.log(window.a);
   }
-
   return (
     <>
       <form method = "POST">
         <input placeholder="Enter your name" name="name" value={user.name} onChange={handleInputs}/>
         <input placeholder="Enter password" name="pass" value={user.pass} onChange={handleInputs}/>
-        <img src={twofactor.dataURL} alt="hju"/> 
+        <img src={window.a} alt="qrcode appears here"/> 
         <button onClick={PostData}>Submit</button>
       </form>
       <br/><br/>
