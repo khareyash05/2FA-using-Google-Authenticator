@@ -1,8 +1,9 @@
 import './App.css';
 import React,{useState} from "react"
+import Check from './Check';
 
 function App() {  
-  var twofactor = {}
+  var twofactor = {dataURL : '',secret  :''}
 
   const [user,setUser] = useState({
     name: '',pass:''
@@ -24,13 +25,17 @@ function App() {
         "Content-Type" : "application/json"
       },
       body : JSON.stringify({
-        name ,pass
+        name,pass
       })
     })
     const data = await res.json()
+    console.log(data);
     twofactor = data
     window.a = twofactor.dataURL
+    window.b = twofactor.secret
     console.log(window.a);
+    console.log(window.b);
+    var c = window.b
   }
   return (
     <>
@@ -46,4 +51,5 @@ function App() {
   );
 }
 
+export {c}
 export default App;

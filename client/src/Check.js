@@ -1,18 +1,30 @@
-import React from 'react'
+import React,{useState} from 'react'
+import {c} from "./App"
 
 const Check = () => {
-    const Otp = async()=>{
-        const res = await fetch("http://localhost:5000/check",{
-            mode  : 'no-cors',
+  const [user,setUser] = useState({
+    name: '',pass:''
+  }) 
+  let name,value
+  const handleInputs = (e)=>{
+    name = e.target.name
+    value = e.target.value
+    setUser({...user,[name]:value})
+  }
+  const Otp = async()=>{
+    const{otp} = user
+    console.log(c);
+        const res = await fetch("/check",{
             method : "POST",
             headers : {
               "Content-Type" : "application/json"
             },
             body : JSON.stringify({
+              otp,c
             })
           })
           const data = await res.json()
-          if(data.status(200)){
+          if(data.status===200){
             window.alert("Successful")
             console.log("Successful");
           }
@@ -23,8 +35,11 @@ const Check = () => {
     }
     return (
         <div>
-            <input placeholder="Enter otp" name="otp"></input>
+          <form method="POST">
+          <input name = "secret" value={c}/>
+            <input placeholder="Enter otp" name="otp" value={user.otp} onChange={handleInputs}></input>
             <button onClick = {Otp}>Check</button>
+          </form>
         </div>
     )
 }

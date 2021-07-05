@@ -3,32 +3,30 @@ const qrcode = require("qrcode")
 const bodyParser = require("body-parser")
 const express = require("express")
 const app = express()
+
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(express.json())
 
 app.post("/",(req,res)=>{
-    var secret1 = speakeasy.generateSecret({
+    secret1 = speakeasy.generateSecret({
         name : req.body.name 
     })
     console.log(secret1);
     
     qrcode.toDataURL(secret1.otpauth_url,function(err,data){
-        console.log(data); // need to send the data as src in img tag in JS        
+        console.log(data);      
         return res.json({
-            dataURL: data
+            dataURL: data,
+            secret : secret1
         })
     })
     console.log("Here come name "+req.body.name);
 })
 
-
-app.get("/check",(req,res)=>{
-    res.send("Check")
-})
-
 app.post("/check",(req,res)=>{
+    console.log(req.body.secret);
     var verified = speakeasy.totp.verify({
-        secret : secret1.ascii,
+        secret : req.body.secret.ascii, // secret1 is not defined
         encoding : 'ascii',
         token : req.body.otp 
     })
